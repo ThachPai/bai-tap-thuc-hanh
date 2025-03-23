@@ -1,0 +1,77 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Flight {
+public:
+    string flightCode;
+    string departureDate;
+    string departureTime;
+    string departurePlace;
+    string arrivalPlace;
+
+    Flight(string code, string date, string time, string from, string to) {
+        flightCode = code;
+        departureDate = date;
+        departureTime = time;
+        departurePlace = from;
+        arrivalPlace = to;
+    }
+
+    void display() {
+        cout << "Ma chuyen bay: " << flightCode << ", Ngay: " << departureDate
+             << ", Gio: " << departureTime << ", Noi di: " << departurePlace
+             << ", Noi den: " << arrivalPlace << endl;
+    }
+};
+
+bool compareFlights(Flight &a, Flight &b) {
+    return a.departureDate + a.departureTime < b.departureDate + b.departureTime;
+}
+
+int main() {
+    vector<Flight> flights;
+    int n;
+    cout << "Nhap so luong chuyen bay: ";
+    cin >> n;
+    cin.ignore();
+
+    for (int i = 0; i < n; i++) {
+        string code, date, time, from, to;
+        cout << "Nhap ma chuyen bay: ";
+        getline(cin, code);
+        cout << "Nhap ngay bay (YYYY-MM-DD): ";
+        getline(cin, date);
+        cout << "Nhap gio bay (HH:MM): ";
+        getline(cin, time);
+        cout << "Nhap noi di: ";
+        getline(cin, from);
+        cout << "Nhap noi den: ";
+        getline(cin, to);
+        flights.push_back(Flight(code, date, time, from, to));
+    }
+
+    sort(flights.begin(), flights.end(), compareFlights);
+
+    cout << "\nDanh sach chuyen bay sau khi sap xep:\n";
+    for (Flight f : flights) {
+        f.display();
+    }
+
+    string searchCode;
+    cout << "\nNhap ma chuyen bay can tim: ";
+    getline(cin, searchCode);
+    bool found = false;
+    for (Flight f : flights) {
+        if (f.flightCode == searchCode) {
+            cout << "Chuyen bay tim thay:\n";
+            f.display();
+            found = true;
+            break;
+        }
+    }
+    if (!found) cout << "Khong tim thay chuyen bay voi ma " << searchCode << endl;
+
+    return 0;
+}

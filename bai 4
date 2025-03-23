@@ -1,0 +1,39 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+// Hàm tính giai thừa
+long long factorial(int n) {
+    long long result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+// Hàm tính sin(x) bằng chuỗi Taylor
+double sinTaylor(double x, double epsilon = 0.00001) {
+    double sum = 0;     // Tổng chuỗi Taylor
+    double term = x;    // Giá trị của từng số hạng
+    int n = 0;          // Số thứ tự của số hạng
+
+    while (fabs(term) >= epsilon) {
+        sum += term;
+        n++;
+        term = pow(-1, n) * pow(x, 2 * n + 1) / factorial(2 * n + 1);
+    }
+
+    return sum;
+}
+
+int main() {
+    double x;
+    cout << "Nhap gia tri x (radian): ";
+    cin >> x;
+
+    double result = sinTaylor(x);
+    cout << "Sin(" << x << ") ≈ " << result << endl;
+
+    return 0;
+}

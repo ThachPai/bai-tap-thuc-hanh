@@ -1,0 +1,50 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+struct PhanSo {
+    int tu;
+    int mau;
+
+    // Hàm nhập phân số
+    void nhap() {
+        cout << "Nhap tu so: ";
+        cin >> tu;
+        cout << "Nhap mau so: ";
+        cin >> mau;
+        if (mau == 0) {
+            cout << "Mẫu số không thể bằng 0. Nhập lại!\n";
+            nhap();
+        }
+    }
+
+    // Hàm xuất phân số
+    void xuat() const {
+        cout << tu << "/" << mau << endl;
+    }
+
+    // Hàm rút gọn phân số
+    void rutGon() {
+        int gcd = __gcd(abs(tu), abs(mau)); // Tìm ước chung lớn nhất
+        tu /= gcd;
+        mau /= gcd;
+        if (mau < 0) { // Đảm bảo mẫu số luôn dương
+            tu = -tu;
+            mau = -mau;
+        }
+    }
+};
+
+int main() {
+    PhanSo ps;
+    ps.nhap();
+    cout << "Phân số ban đầu: ";
+    ps.xuat();
+
+    ps.rutGon();
+    cout << "Phân số sau khi rút gọn: ";
+    ps.xuat();
+
+    return 0;
+}

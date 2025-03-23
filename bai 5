@@ -1,0 +1,83 @@
+#include <iostream>
+
+using namespace std;
+
+// Kiểm tra năm nhuận
+bool isLeapYear(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
+// Số ngày trong tháng
+int daysInMonth(int month, int year) {
+    int days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    if (month == 2 && isLeapYear(year)) return 29;
+    return days[month - 1];
+}
+
+// Tìm ngày kế tiếp
+void nextDay(int &day, int &month, int &year) {
+    if (day < daysInMonth(month, year)) {
+        day++;
+    } else {
+        day = 1;
+        if (month < 12) {
+            month++;
+        } else {
+            month = 1;
+            year++;
+        }
+    }
+}
+
+// Tìm ngày trước đó
+void previousDay(int &day, int &month, int &year) {
+    if (day > 1) {
+        day--;
+    } else {
+        if (month > 1) {
+            month--;
+            day = daysInMonth(month, year);
+        } else {
+            month = 12;
+            year--;
+            day = 31;
+        }
+    }
+}
+
+// Tính ngày thứ bao nhiêu trong năm
+int dayOfYear(int day, int month, int year) {
+    int totalDays = day;
+    for (int i = 1; i < month; i++) {
+        totalDays += daysInMonth(i, year);
+    }
+    return totalDays;
+}
+
+int main() {
+    int day, month, year;
+    
+    cout << "Nhap ngay, thang, nam: ";
+    cin >> day >> month >> year;
+
+    // Kiểm tra ngày hợp lệ
+    if (month < 1 || month > 12 || day < 1 || day > daysInMonth(month, year)) {
+        cout << "Ngay khong hop le!\n";
+        return 1;
+    }
+
+    // Tìm ngày kế tiếp
+    int nextD = day, nextM = month, nextY = year;
+    nextDay(nextD, nextM, nextY);
+    cout << "Ngay ke tiep: " << nextD << "/" << nextM << "/" << nextY << endl;
+
+    // Tìm ngày trước đó
+    int prevD = day, prevM = month, prevY = year;
+    previousDay(prevD, prevM, prevY);
+    cout << "Ngay truoc do: " << prevD << "/" << prevM << "/" << prevY << endl;
+
+    // Tính ngày thứ bao nhiêu trong năm
+    cout << "Day la ngay thu " << dayOfYear(day, month, year) << " trong nam.\n";
+
+    return 0;
+}

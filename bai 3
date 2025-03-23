@@ -1,0 +1,104 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+struct PhanSo {
+    int tu;
+    int mau;
+
+    // Hàm nhập phân số
+    void nhap() {
+        cout << "Nhap tu so: ";
+        cin >> tu;
+        cout << "Nhap mau so: ";
+        cin >> mau;
+        if (mau == 0) {
+            cout << "Mẫu số không thể bằng 0. Nhập lại!\n";
+            nhap();
+        }
+    }
+
+    // Hàm xuất phân số
+    void xuat() const {
+        cout << tu << "/" << mau << endl;
+    }
+
+    // Hàm rút gọn phân số
+    void rutGon() {
+        int gcd = __gcd(abs(tu), abs(mau)); // Tìm ước chung lớn nhất
+        tu /= gcd;
+        mau /= gcd;
+        if (mau < 0) { // Đảm bảo mẫu số luôn dương
+            tu = -tu;
+            mau = -mau;
+        }
+    }
+
+    // Hàm cộng hai phân số
+    PhanSo operator+(const PhanSo &ps) const {
+        PhanSo kq;
+        kq.tu = tu * ps.mau + ps.tu * mau;
+        kq.mau = mau * ps.mau;
+        kq.rutGon();
+        return kq;
+    }
+
+    // Hàm trừ hai phân số
+    PhanSo operator-(const PhanSo &ps) const {
+        PhanSo kq;
+        kq.tu = tu * ps.mau - ps.tu * mau;
+        kq.mau = mau * ps.mau;
+        kq.rutGon();
+        return kq;
+    }
+
+    // Hàm nhân hai phân số
+    PhanSo operator*(const PhanSo &ps) const {
+        PhanSo kq;
+        kq.tu = tu * ps.tu;
+        kq.mau = mau * ps.mau;
+        kq.rutGon();
+        return kq;
+    }
+
+    // Hàm chia hai phân số
+    PhanSo operator/(const PhanSo &ps) const {
+        PhanSo kq;
+        kq.tu = tu * ps.mau;
+        kq.mau = mau * ps.tu;
+        kq.rutGon();
+        return kq;
+    }
+};
+
+int main() {
+    PhanSo ps1, ps2;
+    
+    cout << "Nhập phân số thứ nhất:\n";
+    ps1.nhap();
+    ps1.rutGon();
+
+    cout << "Nhập phân số thứ hai:\n";
+    ps2.nhap();
+    ps2.rutGon();
+
+    cout << "\nPhân số thứ nhất sau khi rút gọn: ";
+    ps1.xuat();
+    cout << "Phân số thứ hai sau khi rút gọn: ";
+    ps2.xuat();
+
+    cout << "\nTổng hai phân số: ";
+    (ps1 + ps2).xuat();
+
+    cout << "Hiệu hai phân số: ";
+    (ps1 - ps2).xuat();
+
+    cout << "Tích hai phân số: ";
+    (ps1 * ps2).xuat();
+
+    cout << "Thương hai phân số: ";
+    (ps1 / ps2).xuat();
+
+    return 0;
+}

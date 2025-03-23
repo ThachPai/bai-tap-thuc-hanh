@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class SubarrayFinder {
+private:
+    vector<int> A, B;
+
+public:
+    // Khởi tạo với dữ liệu đầu vào
+    SubarrayFinder(const vector<int>& a, const vector<int>& b) : A(a), B(b) {}
+
+    // Kiểm tra nếu A xuất hiện tại vị trí start trong B
+    bool isSubarrayAtPosition(int start) {
+        for (int i = 0; i < A.size(); i++) {
+            if (B[start + i] != A[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Tìm tất cả vị trí xuất hiện của A trong B
+    vector<int> findOccurrences() {
+        vector<int> positions;
+        int m = B.size(), n = A.size();
+
+        for (int i = 0; i <= m - n; i++) {
+            if (isSubarrayAtPosition(i)) {
+                positions.push_back(i);
+            }
+        }
+        return positions;
+    }
+
+    // Hiển thị kết quả theo đúng yêu cầu đề bài
+    void displayResults() {
+        vector<int> positions = findOccurrences();
+        cout << positions.size() << endl;
+        for (int pos : positions) {
+            cout << pos << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    int n, m;
+    cin >> n >> m; // Đọc số phần tử của A và B
+
+    vector<int> A(n), B(m);
+    for (int i = 0; i < n; i++) cin >> A[i]; // Nhập mảng A
+    for (int i = 0; i < m; i++) cin >> B[i]; // Nhập mảng B
+
+    SubarrayFinder finder(A, B);
+    finder.displayResults();
+
+    return 0;
+}

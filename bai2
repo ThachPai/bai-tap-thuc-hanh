@@ -1,0 +1,67 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+struct PhanSo {
+    int tu;
+    int mau;
+
+    // Hàm nhập phân số
+    void nhap() {
+        cout << "Nhap tu so: ";
+        cin >> tu;
+        cout << "Nhap mau so: ";
+        cin >> mau;
+        if (mau == 0) {
+            cout << "Mẫu số không thể bằng 0. Nhập lại!\n";
+            nhap();
+        }
+    }
+
+    // Hàm xuất phân số
+    void xuat() const {
+        cout << tu << "/" << mau << endl;
+    }
+
+    // Hàm rút gọn phân số
+    void rutGon() {
+        int gcd = __gcd(abs(tu), abs(mau)); // Tìm ước chung lớn nhất
+        tu /= gcd;
+        mau /= gcd;
+        if (mau < 0) { // Đảm bảo mẫu số luôn dương
+            tu = -tu;
+            mau = -mau;
+        }
+    }
+
+    // Hàm so sánh hai phân số, trả về true nếu this > ps2
+    bool lonHon(PhanSo ps2) {
+        return (1LL * tu * ps2.mau > 1LL * ps2.tu * mau);
+    }
+};
+
+int main() {
+    PhanSo ps1, ps2;
+
+    cout << "Nhập phân số thứ nhất:\n";
+    ps1.nhap();
+    ps1.rutGon();
+
+    cout << "Nhập phân số thứ hai:\n";
+    ps2.nhap();
+    ps2.rutGon();
+
+    cout << "Phân số thứ nhất sau khi rút gọn: ";
+    ps1.xuat();
+    cout << "Phân số thứ hai sau khi rút gọn: ";
+    ps2.xuat();
+
+    cout << "Phân số lớn nhất là: ";
+    if (ps1.lonHon(ps2))
+        ps1.xuat();
+    else
+        ps2.xuat();
+
+    return 0;
+}

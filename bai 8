@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+using namespace std;
+
+class SoTietKiem {
+private:
+    string maSo, loaiTietKiem, hoTen;
+    long cmnd;
+    string ngayMoSo;
+    double soTienGui;
+public:
+    void nhap();
+    void xuat() const;
+    double tinhLai(double laiSuat, int soThang) const;
+    string getMaSo() const { return maSo; }
+    long getCMND() const { return cmnd; }
+    double getSoTienGui() const { return soTienGui; }
+    string getNgayMoSo() const { return ngayMoSo; }
+};
+
+void SoTietKiem::nhap() {
+    cout << "Nhap ma so (toi da 5 ky tu, khong chua khoang trang hoac ky tu dac biet): ";
+    cin >> maSo;
+    cout << "Nhap loai tiet kiem: ";
+    cin.ignore();
+    getline(cin, loaiTietKiem);
+    cout << "Nhap ho ten khach hang: ";
+    getline(cin, hoTen);
+    cout << "Nhap so CMND (9 hoac 12 chu so): ";
+    cin >> cmnd;
+    cout << "Nhap ngay mo so (dd/mm/yyyy): ";
+    cin >> ngayMoSo;
+    do {
+        cout << "Nhap so tien gui (so duong): ";
+        cin >> soTienGui;
+        if (soTienGui <= 0)
+            cout << "So tien gui phai lon hon 0. Nhap lai!\n";
+    } while (soTienGui <= 0);
+}
+
+void SoTietKiem::xuat() const {
+    cout << left << setw(10) << maSo << setw(15) << hoTen << setw(15) << cmnd << setw(15)
+         << ngayMoSo << setw(15) << soTienGui << endl;
+}
+
+double SoTietKiem::tinhLai(double laiSuat, int soThang) const {
+    return soTienGui * (laiSuat / 100) * (soThang / 12.0);
+}
+
+int main() {
+    vector<SoTietKiem> danhSach;
+    int n;
+    cout << "Nhap so luong so tiet kiem: ";
+    cin >> n;
+    
+    for (int i = 0; i < n; i++) {
+        cout << "Nhap thong tin so tiet kiem thu " << i + 1 << ":\n";
+        SoTietKiem stk;
+        stk.nhap();
+        danhSach.push_back(stk);
+    }
+    
+    cout << "\nDanh sach so tiet kiem:\n";
+    cout << left << setw(10) << "Ma so" << setw(15) << "Ho ten" << setw(15) << "CMND" << setw(15)
+         << "Ngay mo so" << setw(15) << "So tien gui" << endl;
+    for (const auto &stk : danhSach) {
+        stk.xuat();
+    }
+    
+    return 0;
+}
